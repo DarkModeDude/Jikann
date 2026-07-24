@@ -44,6 +44,7 @@ def main():
             try:
                 with open(LoadingBoard, "r"):
                     print("board loaded")
+                    Currentboard = LoadingBoard
             except FileNotFoundError:
                 print("that board does not exist in the current directory")
 
