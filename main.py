@@ -7,6 +7,8 @@ from datetime import *
 def main():
     StartTime = datetime.now(timezone.utc) # i hate python
     timing = False
+    Currentboard = "timeboard.json"
+
     while True:
         prompt = input("prompt: ")
 
@@ -17,6 +19,7 @@ def main():
                 print("Started Timer At: " + str(StartTime))
             else:
                 print("you where already timing somthing, you must stop it to start another") # we should make it so that you can run multible at once somt time in the future
+
         elif prompt == "stop":
             if timing:
                 print("Stoped timer, you spent: " + str(datetime.now(timezone.utc) - StartTime) + "on that")
@@ -24,6 +27,18 @@ def main():
                 # save the time chunk to memory or somthing
             else:
                 print("you where not timing anything")
+        
+        elif prompt == "new board":
+            NewBoardName = input("what should the board be called? ") + ".json"
+            try:
+                with open(NewBoardName, "r") as file:
+                    if input("that file already exists, would you like to open it? ") == "yes":
+                        Currentboard = NewBoardName
+            except FileNotFoundError:
+                with open(NewBoardName, "w"):
+                    pass
+            Currentboard = NewBoardName
+
         elif prompt == "quit":
             break
 
