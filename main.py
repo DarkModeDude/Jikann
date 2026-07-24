@@ -28,7 +28,7 @@ def main():
             else:
                 print("you where not timing anything")
         
-        elif prompt == "new board":
+        elif prompt == "new board" or prompt == "new":
             NewBoardName = input("what should the board be called? ") + ".json"
             try:
                 with open(NewBoardName, "r") as file:
@@ -38,6 +38,14 @@ def main():
                 with open(NewBoardName, "w"):
                     pass
             Currentboard = NewBoardName
+        
+        elif prompt == "load board" or prompt == "load":
+            LoadingBoard = input("what is the new baord name? ") + ".json"
+            try:
+                with open(LoadingBoard, "r"):
+                    print("board loaded")
+            except FileNotFoundError:
+                print("that board does not exist in the current directory")
 
         elif prompt == "quit":
             break
