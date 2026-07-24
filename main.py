@@ -7,10 +7,10 @@ from datetime import *
 def main():
     StartTime = datetime.now(timezone.utc) # i hate python
     timing = False
-    Currentboard = "timeboard.json"
+    Currentboard = "NoBoard.json"
 
     while True:
-        prompt = input("prompt: ")
+        prompt = input(f"{Currentboard.split(".")[0]}: ")
 
         if prompt == "start":
             if (timing == False):
