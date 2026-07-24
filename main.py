@@ -4,8 +4,24 @@ from datetime import *
 # import json
 
 
+def DoesBoardExist(BoardName=""):
+    try:
+        file = open(BoardName, "r")
+        file.close()
+        return True
+    except FileNotFoundError:
+        return False
+
+def GetBoardName(prompt="board name? "):
+    return input(prompt).split('.')[0] + ".json"
+
+def CreateBoard(BoardName=""):
+    with open(BoardName, "w"):
+        pass
+
+
 def main():
-    StartTime = datetime.now(timezone.utc) # i hate python
+    StartTime = datetime.now(timezone.utc)
     timing = False
     Currentboard = "NoBoard.json"
 
@@ -29,23 +45,20 @@ def main():
                 print("you where not timing anything")
         
         elif prompt == "new board" or prompt == "new":
-            NewBoardName = input("what should the board be called? ") + ".json"
-            try:
-                with open(NewBoardName, "r") as file:
-                    if input("that file already exists, would you like to open it? ") == "yes":
-                        Currentboard = NewBoardName
-            except FileNotFoundError:
-                with open(NewBoardName, "w"):
-                    pass
-            Currentboard = NewBoardName
+            NewBoardName = GetBoardName("what should the board be called? ")
+            if DoesBoardExist(NewBoardName):
+                if input("that file already exists, would you like to open it? ") == "yes":
+                    Currentboard = NewBoardName
+            else:
+                CreateBoard(NewBoardName)
+                Currentboard = NewBoardName
         
         elif prompt == "load board" or prompt == "load":
-            LoadingBoard = input("what is the new baord name? ") + ".json"
-            try:
-                with open(LoadingBoard, "r"):
-                    print("board loaded")
-                    Currentboard = LoadingBoard
-            except FileNotFoundError:
+            LoadingBoard = GetBoardName("what is the new baord name? ")
+            if DoesBoardExist(LoadingBoard):
+                Currentboard = LoadingBoard
+                print("board loaded")
+            else:
                 print("that board does not exist in the current directory")
 
         elif prompt == "quit":
