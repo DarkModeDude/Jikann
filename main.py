@@ -1,9 +1,10 @@
 # this is the main file where all the main logic is run
 
 from datetime import *
-# import json
+from json import load, dump
 
 
+# check to see if a board exists in the current directory:
 def DoesBoardExist(BoardName=""):
     try:
         file = open(BoardName, "r")
@@ -12,17 +13,27 @@ def DoesBoardExist(BoardName=""):
     except FileNotFoundError:
         return False
 
+# get the name of a board from the user:
 def GetBoardName(prompt="board name? "):
     return input(prompt).split('.')[0] + ".json"
 
+# create a board file:
 def CreateBoard(BoardName=""):
     with open(BoardName, "w"):
         pass
 
+def LoadBoard(BoardName):
+    with open(BoardName, "r") as board:
+        return load(board)
+
+def WriteBoard(BoardName, data):
+    with open(BoardName, "w") as board:
+        dump(data, board)
+
 
 def main():
-    
     # multi prompt loop variables:
+    data = {}
     StartTime = datetime.now(timezone.utc)
     timing = False
     Currentboard = "NoBoard.json"
@@ -46,7 +57,7 @@ def main():
             if timing:
                 print("Stoped timer, you spent: " + str(datetime.now(timezone.utc) - StartTime) + "on that")
                 timing = False
-                # save the time chunk to memory or somthing
+                WriteBoard(Currentboard, data)
             else:
                 print("you where not timing anything")
         
@@ -65,13 +76,18 @@ def main():
             LoadingBoard = GetBoardName("what is the new baord name? ")
             if DoesBoardExist(LoadingBoard):
                 Currentboard = LoadingBoard
+                data = LoadBoard(Currentboard)
                 print("board loaded")
             else:
                 print("that board does not exist in the current directory")
 
+        elif prompt == "save":
+            WriteBoard(Currentboard, data)
+
         # quiting the program:
         elif prompt == "quit":
             break
+        print(data)
 
 if __name__ == "__main__":
     main()
