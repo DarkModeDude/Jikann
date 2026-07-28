@@ -19,8 +19,7 @@ def GetBoardName(prompt="board name? "):
 
 # create a board file:
 def CreateBoard(BoardName=""):
-    with open(BoardName, "w"):
-        pass
+    WriteBoard(BoardName, {})
 
 def LoadBoard(BoardName):
     with open(BoardName, "r") as board:
