@@ -19,7 +19,7 @@ def GetBoardName(prompt="board name? "):
 
 # create a board file:
 def CreateBoard(BoardName=""):
-    WriteBoard(BoardName, {})
+    WriteBoard(BoardName, [])
 
 def LoadBoard(BoardName):
     with open(BoardName, "r") as board:
@@ -32,7 +32,7 @@ def WriteBoard(BoardName, data):
 
 def main():
     # multi prompt loop variables:
-    data = {}
+    data = []
     StartTime = datetime.now(timezone.utc)
     timing = False
     Currentboard = "NoBoard.json"
@@ -54,9 +54,13 @@ def main():
         # stoping a timer:
         elif prompt == "stop":
             if timing:
-                print("Stoped timer, you spent: " + str(datetime.now(timezone.utc) - StartTime) + "on that")
+                EndTime = datetime.now(timezone.utc)
+                TimeSpent = EndTime - StartTime
+                print("Stoped timer, you spent: " + str(TimeSpent) + "on that")
                 timing = False
-                WriteBoard(Currentboard, data)
+                # save the time entry to the data dict:
+                data.append([str(StartTime), str(EndTime), str(TimeSpent)])
+                WriteBoard(Currentboard, data) # and save it to disk
             else:
                 print("you where not timing anything")
         
